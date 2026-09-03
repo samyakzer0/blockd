@@ -1,10 +1,9 @@
 /**
  * BlockD Indian Kanoon Search & Ingestion Client
- * Robust support for HTTPS redirects, standard browser headers, and JSON API.
+ * Live parsing of https://indiankanoon.org without any fake fallbacks.
  */
 
 const https = require("https");
-const http = require("http");
 
 class IndianKanoonClient {
   constructor(apiToken = process.env.INDIAN_KANOON_API_TOKEN || "") {
@@ -56,9 +55,8 @@ class IndianKanoonClient {
       const options = {
         headers: {
           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-          "Accept-Language": "en-US,en;q=0.9",
-          "Cache-Control": "no-cache"
+          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9"
         }
       };
 
@@ -69,31 +67,31 @@ class IndianKanoonClient {
             let html = "";
             redirRes.on("data", (c) => (html += c));
             redirRes.on("end", () => {
-              const docs = this._parseHtml(html, query);
+              const docs = this._parseHtml(html);
               resolve({ found: docs.length, docs });
             });
-          }).on("error", () => resolve({ found: 1, docs: this._getGenericFallback(query) }));
+          }).on("error", () => resolve({ found: 0, docs: [] }));
         }
 
         let html = "";
         res.on("data", (chunk) => (html += chunk));
         res.on("end", () => {
-          const docs = this._parseHtml(html, query);
+          const docs = this._parseHtml(html);
           resolve({ found: docs.length, docs });
         });
       });
 
       req.on("error", () => {
-        resolve({ found: 1, docs: this._getGenericFallback(query) });
+        resolve({ found: 0, docs: [] });
       });
-      req.setTimeout(8000, () => {
+      req.setTimeout(10000, () => {
         req.destroy();
-        resolve({ found: 1, docs: this._getGenericFallback(query) });
+        resolve({ found: 0, docs: [] });
       });
     });
   }
 
-  _parseHtml(html, query) {
+  _parseHtml(html) {
     const docs = [];
     const articles = html.split('<article class="result"');
 
@@ -105,15 +103,23 @@ class IndianKanoonClient {
 
       if (docIdMatch && titleMatch) {
         const tid = parseInt(docIdMatch[1], 10);
-        const title = titleMatch[1].replace(/<[^>]+>/g, "").trim();
-        const headline = headlineMatch ? headlineMatch[1].replace(/<[^>]+>/g, "").trim() : "";
+        let title = titleMatch[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+        title = title.replace(/\[Entire Act\]/gi, "").trim();
+
+        let headline = headlineMatch ? headlineMatch[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim() : "";
+
+        if (title.startsWith("Section ") && !headline) {
+          headline = `Statutory penal provisions under the Indian Penal Code / Criminal Law for ${title}.`;
+        }
 
         if (title && !docs.some(d => d.tid === tid)) {
           docs.push({
             tid,
             title,
-            headline: headline || "Judicial appeal and judgment record from Indian Kanoon.",
-            docsource: title.includes("Supreme Court")
+            headline: headline || "Judicial record from Indian Kanoon archive.",
+            docsource: title.startsWith("Section")
+              ? "Indian Penal Code / Statute"
+              : title.includes("Supreme Court")
               ? "Supreme Court of India"
               : title.includes("Bombay")
               ? "Bombay High Court"
@@ -122,60 +128,14 @@ class IndianKanoonClient {
               : title.includes("Gujarat")
               ? "Gujarat High Court"
               : "High Court of Judicature",
-            publishdate: "Recent"
+            publishdate: "Judicial Record"
           });
         }
       }
-      if (docs.length >= 8) break;
+      if (docs.length >= 10) break;
     }
 
-    return docs.length > 0 ? docs : this._getGenericFallback(query);
-  }
-
-  _getGenericFallback(query) {
-    const isVinay = query.toLowerCase().includes("vinay");
-    const isMazahar = query.toLowerCase().includes("mazahar");
-
-    if (isVinay) {
-      return [
-        {
-          tid: 154825704,
-          title: "Vinay Vishnu Jadhav vs State Of Gujarat on 18 July, 2024",
-          headline: "Criminal Misc Application (For Regular Bail After Chargesheet) regarding MHADA allotment forgery and Rs. 1.45 Crore extortion.",
-          docsource: "Gujarat High Court",
-          publishdate: "2024-07-18"
-        },
-        {
-          tid: 145184008,
-          title: "Vinay Vishnu Jadhav vs The State Of Maharashtra on 19 March, 2024",
-          headline: "High Court of Bombay criminal appeal in connection with inter-state document fabrication racket.",
-          docsource: "Bombay High Court",
-          publishdate: "2024-03-19"
-        }
-      ];
-    }
-
-    if (isMazahar) {
-      return [
-        {
-          tid: 7044947,
-          title: "Zeba Khan vs State Of U.P. (Supreme Court of India - 2026 INSC 144)",
-          headline: "Criminal Appeal regarding large-scale fake LL.B degree syndicate operated by Mazahar Khan across 9 FIRs in UP, Maharashtra, and Karnataka.",
-          docsource: "Supreme Court of India",
-          publishdate: "2026-02-11"
-        }
-      ];
-    }
-
-    return [
-      {
-        tid: 145184008,
-        title: query.includes("vs") ? query : `${query} vs State of Maharashtra`,
-        headline: `Criminal proceedings and judicial record for '${query}' retrieved from Indian Kanoon.`,
-        docsource: "High Court / Supreme Court",
-        publishdate: "2024"
-      }
-    ];
+    return docs;
   }
 
   /**
