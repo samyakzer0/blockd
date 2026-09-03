@@ -1,0 +1,552 @@
+{
+  "caseId": "2026-INSC-144",
+  "caseTitle": "Supreme Court Appeal (2026 INSC 144) - Mazahar Khan Multi-State Syndicate",
+  "summary": "Inter-State Fake Degree, Forgery, and Judicial Impersonation Syndicate operating across Uttar Pradesh, Maharashtra, and Karnataka.",
+  "stats": {
+    "totalNodes": 20,
+    "totalEdges": 19,
+    "totalEvidenceFiles": 9,
+    "kingpinIdentified": "Mazahar Khan",
+    "topBroker": "Sarvodaya Group of Institutions"
+  },
+  "graphData": {
+    "nodes": [
+      {
+        "data": {
+          "id": "Mazahar Khan",
+          "label": "Mazahar Khan",
+          "type": "SUSPECT",
+          "degree": 14,
+          "pageRank": 0.3266,
+          "betweenness": 165,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Zeba Khan",
+          "label": "Zeba Khan",
+          "type": "SUSPECT",
+          "degree": 1,
+          "pageRank": 0.0297,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Sarvodaya Group of Institutions",
+          "label": "Sarvodaya Group of Institutions (Jaunpur)",
+          "type": "ORGANIZATION",
+          "degree": 2,
+          "pageRank": 0.0551,
+          "betweenness": 18,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Purvanchal University",
+          "label": "Veer Bahadur Singh Purvanchal University",
+          "type": "ORGANIZATION",
+          "degree": 1,
+          "pageRank": 0.0318,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Kohinoor Arts Commerce Science College",
+          "label": "Kohinoor Arts Commerce & Science College",
+          "type": "ORGANIZATION",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Sandip University Nashik",
+          "label": "Sandip University (Nashik)",
+          "type": "ORGANIZATION",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Bar Council of Maharashtra and Goa",
+          "label": "State Bar Council of Maharashtra & Goa",
+          "type": "ORGANIZATION",
+          "degree": 1,
+          "pageRank": 0.0297,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Supreme Court Bar Association",
+          "label": "Supreme Court Bar Association",
+          "type": "ORGANIZATION",
+          "degree": 1,
+          "pageRank": 0.0297,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 314/2024 (Sarai Khwaja, Jaunpur UP)",
+          "label": "FIR 314/2024 (Jaunpur UP - Forgery & 420 IPC)",
+          "type": "FIR_CASE",
+          "degree": 2,
+          "pageRank": 0.0543,
+          "betweenness": 18,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 8/2025 (Thilaknagar, Bengaluru)",
+          "label": "FIR 8/2025 (Bengaluru City - 420/465 IPC)",
+          "type": "FIR_CASE",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 62/2025 (Begampura, Sambhaji Nagar)",
+          "label": "FIR 62/2025 (Sambhaji Nagar - 318 BNS)",
+          "type": "FIR_CASE",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 232/2025 (Khultabad, Aurangabad)",
+          "label": "FIR 232/2025 (Aurangabad - Malpractices Act)",
+          "type": "FIR_CASE",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 136/2023 (Harsul, Aurangabad)",
+          "label": "FIR 136/2023 (Harsul - 452/379 IPC Theft)",
+          "type": "FIR_CASE",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 124/2025 (City Chowk, Sambhaji Nagar)",
+          "label": "FIR 124/2025 (City Chowk - 115 BNS)",
+          "type": "FIR_CASE",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 338/2016 (Khultabad PS)",
+          "label": "FIR 338/2016 (Khultabad - 354A IPC)",
+          "type": "FIR_CASE",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 331/2011 (Kranti Chowk PS)",
+          "label": "FIR 331/2011 (Kranti Chowk - 420/468 IPC)",
+          "type": "FIR_CASE",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "FIR No. 48/2011 (Khultabad Appeal PS)",
+          "label": "FIR 48/2011 (Khultabad - 471/474 IPC)",
+          "type": "FIR_CASE",
+          "degree": 1,
+          "pageRank": 0.0282,
+          "betweenness": 0,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Roll PU-16/6710273",
+          "label": "Roll PU-16/6710273 (Forged LL.B.)",
+          "type": "CREDENTIAL",
+          "degree": 2,
+          "pageRank": 0.0525,
+          "betweenness": 34,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "Roll MAH/2493/2023",
+          "label": "Bar Roll MAH/2493/2023 (Revoked)",
+          "type": "CREDENTIAL",
+          "degree": 2,
+          "pageRank": 0.0543,
+          "betweenness": 18,
+          "communityId": 9
+        }
+      },
+      {
+        "data": {
+          "id": "SCBA K-00408/OS",
+          "label": "SCBA Membership K-00408/OS",
+          "type": "CREDENTIAL",
+          "degree": 2,
+          "pageRank": 0.0543,
+          "betweenness": 18,
+          "communityId": 9
+        }
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "id": "EDGE_1",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 314/2024 (Sarai Khwaja, Jaunpur UP)",
+          "label": "PRIMARY_ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_2",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 8/2025 (Thilaknagar, Bengaluru)",
+          "label": "ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_3",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 62/2025 (Begampura, Sambhaji Nagar)",
+          "label": "ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_4",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 232/2025 (Khultabad, Aurangabad)",
+          "label": "ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_5",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 136/2023 (Harsul, Aurangabad)",
+          "label": "ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_6",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 124/2025 (City Chowk, Sambhaji Nagar)",
+          "label": "ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_7",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 338/2016 (Khultabad PS)",
+          "label": "ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_8",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 331/2011 (Kranti Chowk PS)",
+          "label": "ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_9",
+          "source": "Mazahar Khan",
+          "target": "FIR No. 48/2011 (Khultabad Appeal PS)",
+          "label": "ACCUSED_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_10",
+          "source": "Mazahar Khan",
+          "target": "Roll PU-16/6710273",
+          "label": "FABRICATED_DOCUMENT",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_11",
+          "source": "Roll PU-16/6710273",
+          "target": "Sarvodaya Group of Institutions",
+          "label": "PURPORTED_ISSUER",
+          "confidence": 0.98,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_12",
+          "source": "Sarvodaya Group of Institutions",
+          "target": "Purvanchal University",
+          "label": "UNAFFILIATED_CLAIM",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_13",
+          "source": "Mazahar Khan",
+          "target": "Roll MAH/2493/2023",
+          "label": "FRAUDULENT_ENROLMENT",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_14",
+          "source": "Roll MAH/2493/2023",
+          "target": "Bar Council of Maharashtra and Goa",
+          "label": "ENROLLED_AT",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_15",
+          "source": "Mazahar Khan",
+          "target": "SCBA K-00408/OS",
+          "label": "OBTAINED_MEMBERSHIP",
+          "confidence": 0.98,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_16",
+          "source": "SCBA K-00408/OS",
+          "target": "Supreme Court Bar Association",
+          "label": "ISSUED_BY",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_17",
+          "source": "Mazahar Khan",
+          "target": "Kohinoor Arts Commerce Science College",
+          "label": "PRESIDENT_OF",
+          "confidence": 0.95,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_18",
+          "source": "Mazahar Khan",
+          "target": "Sandip University Nashik",
+          "label": "FRAUDULENT_ADMISSION",
+          "confidence": 0.95,
+          "evidence": ""
+        }
+      },
+      {
+        "data": {
+          "id": "EDGE_19",
+          "source": "Zeba Khan",
+          "target": "FIR No. 314/2024 (Sarai Khwaja, Jaunpur UP)",
+          "label": "COMPLAINANT_IN",
+          "confidence": 0.99,
+          "evidence": ""
+        }
+      }
+    ]
+  },
+  "analytics": {
+    "nodeCount": 20,
+    "edgeCount": 19,
+    "topKingpins": [
+      {
+        "id": "Mazahar Khan",
+        "label": "Mazahar Khan",
+        "type": "SUSPECT",
+        "pageRank": 0.3266
+      },
+      {
+        "id": "Sarvodaya Group of Institutions",
+        "label": "Sarvodaya Group of Institutions (Jaunpur)",
+        "type": "ORGANIZATION",
+        "pageRank": 0.0551
+      },
+      {
+        "id": "FIR No. 314/2024 (Sarai Khwaja, Jaunpur UP)",
+        "label": "FIR 314/2024 (Jaunpur UP - Forgery & 420 IPC)",
+        "type": "FIR_CASE",
+        "pageRank": 0.0543
+      },
+      {
+        "id": "Roll MAH/2493/2023",
+        "label": "Bar Roll MAH/2493/2023 (Revoked)",
+        "type": "CREDENTIAL",
+        "pageRank": 0.0543
+      },
+      {
+        "id": "SCBA K-00408/OS",
+        "label": "SCBA Membership K-00408/OS",
+        "type": "CREDENTIAL",
+        "pageRank": 0.0543
+      }
+    ],
+    "topBrokers": [
+      {
+        "id": "Mazahar Khan",
+        "label": "Mazahar Khan",
+        "type": "SUSPECT",
+        "betweenness": 165
+      },
+      {
+        "id": "Roll PU-16/6710273",
+        "label": "Roll PU-16/6710273 (Forged LL.B.)",
+        "type": "CREDENTIAL",
+        "betweenness": 34
+      },
+      {
+        "id": "Sarvodaya Group of Institutions",
+        "label": "Sarvodaya Group of Institutions (Jaunpur)",
+        "type": "ORGANIZATION",
+        "betweenness": 18
+      },
+      {
+        "id": "FIR No. 314/2024 (Sarai Khwaja, Jaunpur UP)",
+        "label": "FIR 314/2024 (Jaunpur UP - Forgery & 420 IPC)",
+        "type": "FIR_CASE",
+        "betweenness": 18
+      },
+      {
+        "id": "Roll MAH/2493/2023",
+        "label": "Bar Roll MAH/2493/2023 (Revoked)",
+        "type": "CREDENTIAL",
+        "betweenness": 18
+      }
+    ],
+    "communityClusters": {
+      "9": [
+        "Mazahar Khan",
+        "Zeba Khan",
+        "Sarvodaya Group of Institutions",
+        "Purvanchal University",
+        "Kohinoor Arts Commerce Science College",
+        "Sandip University Nashik",
+        "Bar Council of Maharashtra and Goa",
+        "Supreme Court Bar Association",
+        "FIR No. 314/2024 (Sarai Khwaja, Jaunpur UP)",
+        "FIR No. 8/2025 (Thilaknagar, Bengaluru)",
+        "FIR No. 62/2025 (Begampura, Sambhaji Nagar)",
+        "FIR No. 232/2025 (Khultabad, Aurangabad)",
+        "FIR No. 136/2023 (Harsul, Aurangabad)",
+        "FIR No. 124/2025 (City Chowk, Sambhaji Nagar)",
+        "FIR No. 338/2016 (Khultabad PS)",
+        "FIR No. 331/2011 (Kranti Chowk PS)",
+        "FIR No. 48/2011 (Khultabad Appeal PS)",
+        "Roll PU-16/6710273",
+        "Roll MAH/2493/2023",
+        "SCBA K-00408/OS"
+      ]
+    }
+  },
+  "evidenceLedger": [
+    {
+      "id": 1,
+      "caseId": "2026-INSC-144",
+      "type": "JUDICIAL_APPEAL",
+      "title": "Supreme Court of India Judgment (2026 INSC 144)",
+      "cid": "QmRealSupremeCourtJudicialAppeal2026INSC144IPFSProof",
+      "checksum": "a8e9d7c6b5a41234567890abcdef1234567890abcdef1234567890abcdef12",
+      "officer": "0xJudicialRegistry_SupremeCourt_NewDelhi",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 2,
+      "caseId": "FIR-314-2024-UP",
+      "type": "POLICE_FIR",
+      "title": "FIR No. 314/2024 (P.S. Sarai Khwaja, Jaunpur UP)",
+      "cid": "QmJaunpurPoliceFIR3142024ForgerySection420IPFSProof",
+      "checksum": "b1c2d3e4f5061234567890abcdef1234567890abcdef1234567890abcdef34",
+      "officer": "0xInvestigatingOfficer_JaunpurPolice_UP",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 3,
+      "caseId": "FIR-8-2025-BLR",
+      "type": "POLICE_FIR",
+      "title": "FIR No. 8/2025 (P.S. Thilaknagar, Bengaluru City)",
+      "cid": "QmBengaluruCityPoliceFIR82025ForgeryIPFSProof",
+      "checksum": "c3d4e5f607181234567890abcdef1234567890abcdef1234567890abcdef56",
+      "officer": "0xInspector_BengaluruCityPolice_Karnataka",
+      "status": "ACTIVE"
+    }
+  ]
+}

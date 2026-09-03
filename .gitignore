@@ -1,0 +1,32 @@
+# Node dependencies across all subfolders
+node_modules/
+**/node_modules/
+dashboard/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment & API tokens (Keep secret!)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Temporary upload files & tests
+backend/uploads/
+uploads/
+scratch/
+test_*.js
+demo_*.js
+*.log
+
+# Build outputs
+dist/
+**/dist/
+build/
+.cache/
+
+# OS Files
+.DS_Store
+Thumbs.db

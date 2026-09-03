@@ -1,0 +1,236 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "logId", "type": "uint256" },
+      { "indexed": true, "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "indexed": true, "internalType": "address", "name": "officer", "type": "address" },
+      { "indexed": false, "internalType": "uint8", "name": "action", "type": "uint8" },
+      { "indexed": false, "internalType": "string", "name": "purpose", "type": "string" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "ChainOfCustodyLogged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "indexed": true, "internalType": "string", "name": "caseId", "type": "string" },
+      { "indexed": false, "internalType": "uint8", "name": "evidenceType", "type": "uint8" },
+      { "indexed": false, "internalType": "string", "name": "title", "type": "string" },
+      { "indexed": false, "internalType": "string", "name": "ipfsCid", "type": "string" },
+      { "indexed": false, "internalType": "bytes32", "name": "sha256Checksum", "type": "bytes32" },
+      { "indexed": true, "internalType": "address", "name": "submittingOfficer", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "EvidenceRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "indexed": true, "internalType": "uint8", "name": "oldStatus", "type": "uint8" },
+      { "indexed": true, "internalType": "uint8", "name": "newStatus", "type": "uint8" },
+      { "indexed": false, "internalType": "address", "name": "changedBy", "type": "address" },
+      { "indexed": false, "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "EvidenceStatusChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "account", "type": "address" },
+      { "indexed": true, "internalType": "uint8", "name": "oldRole", "type": "uint8" },
+      { "indexed": true, "internalType": "uint8", "name": "newRole", "type": "uint8" },
+      { "indexed": false, "internalType": "address", "name": "updatedBy", "type": "address" }
+    ],
+    "name": "RoleUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "warrantId", "type": "uint256" },
+      { "indexed": true, "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "indexed": true, "internalType": "address", "name": "magistrate", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "approvedAt", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "validUntil", "type": "uint256" }
+    ],
+    "name": "WarrantApproved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "warrantId", "type": "uint256" },
+      { "indexed": true, "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "indexed": true, "internalType": "address", "name": "requestingOfficer", "type": "address" },
+      { "indexed": false, "internalType": "string", "name": "justification", "type": "string" },
+      { "indexed": false, "internalType": "uint256", "name": "requestedAt", "type": "uint256" }
+    ],
+    "name": "WarrantRequested",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "warrantId", "type": "uint256" },
+      { "internalType": "uint256", "name": "durationInSeconds", "type": "uint256" }
+    ],
+    "name": "approveWarrant",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "evidenceCounter",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "evidenceId", "type": "uint256" }],
+    "name": "getChainOfCustody",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "logId", "type": "uint256" },
+          { "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+          { "internalType": "address", "name": "officer", "type": "address" },
+          { "internalType": "uint8", "name": "action", "type": "uint8" },
+          { "internalType": "string", "name": "purpose", "type": "string" },
+          { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+          { "internalType": "string", "name": "notes", "type": "string" }
+        ],
+        "internalType": "struct BlockDEvidenceRegistry.CustodyLog[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "evidenceId", "type": "uint256" }],
+    "name": "getEvidence",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+          { "internalType": "string", "name": "caseId", "type": "string" },
+          { "internalType": "uint8", "name": "evidenceType", "type": "uint8" },
+          { "internalType": "string", "name": "title", "type": "string" },
+          { "internalType": "string", "name": "ipfsCid", "type": "string" },
+          { "internalType": "bytes32", "name": "sha256Checksum", "type": "bytes32" },
+          { "internalType": "string", "name": "encryptedKeyEnvelope", "type": "string" },
+          { "internalType": "address", "name": "submittingOfficer", "type": "address" },
+          { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+          { "internalType": "uint8", "name": "status", "type": "uint8" },
+          { "internalType": "bool", "name": "requiresWarrant", "type": "bool" }
+        ],
+        "internalType": "struct BlockDEvidenceRegistry.Evidence",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "caseId", "type": "string" }],
+    "name": "getEvidencesByCase",
+    "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+    "name": "getRole",
+    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "warrantId", "type": "uint256" }],
+    "name": "isWarrantValid",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "internalType": "uint8", "name": "action", "type": "uint8" },
+      { "internalType": "string", "name": "purpose", "type": "string" },
+      { "internalType": "string", "name": "notes", "type": "string" }
+    ],
+    "name": "logAccess",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "caseId", "type": "string" },
+      { "internalType": "uint8", "name": "evidenceType", "type": "uint8" },
+      { "internalType": "string", "name": "title", "type": "string" },
+      { "internalType": "string", "name": "ipfsCid", "type": "string" },
+      { "internalType": "bytes32", "name": "sha256Checksum", "type": "bytes32" },
+      { "internalType": "string", "name": "encryptedKeyEnvelope", "type": "string" },
+      { "internalType": "bool", "name": "requiresWarrant", "type": "bool" }
+    ],
+    "name": "registerEvidence",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "internalType": "string", "name": "justification", "type": "string" }
+    ],
+    "name": "requestWarrant",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "account", "type": "address" },
+      { "internalType": "uint8", "name": "role", "type": "uint8" }
+    ],
+    "name": "setRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "internalType": "uint8", "name": "newStatus", "type": "uint8" },
+      { "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "updateEvidenceStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "evidenceId", "type": "uint256" },
+      { "internalType": "bytes32", "name": "computedChecksum", "type": "bytes32" }
+    ],
+    "name": "verifyIntegrity",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
