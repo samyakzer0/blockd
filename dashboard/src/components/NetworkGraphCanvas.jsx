@@ -8,6 +8,7 @@ export function NetworkGraphCanvas({ graphData, onSelectNode, selectedNodeId, hi
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
+  const containerRef = useRef(null);
   const nodes = graphData?.nodes || [];
   const edges = graphData?.edges || [];
 
@@ -80,6 +81,23 @@ export function NetworkGraphCanvas({ graphData, onSelectNode, selectedNodeId, hi
     return positions;
   }, [nodes]);
 
+  // Attach non-passive wheel listener directly to container DOM element
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleWheelNonPassive = (e) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+      setZoom((z) => Math.min(Math.max(z * zoomFactor, 0.2), 3.0));
+    };
+
+    el.addEventListener("wheel", handleWheelNonPassive, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", handleWheelNonPassive);
+    };
+  }, []);
+
   const handleMouseDown = (e) => {
     if (e.target.tagName === "circle" || e.target.tagName === "text") return;
     setIsDragging(true);
@@ -93,30 +111,24 @@ export function NetworkGraphCanvas({ graphData, onSelectNode, selectedNodeId, hi
 
   const handleMouseUp = () => setIsDragging(false);
 
-  const handleWheel = (e) => {
-    e.preventDefault();
-    const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
-    setZoom((z) => Math.min(Math.max(z * zoomFactor, 0.2), 3.0));
-  };
-
   const getNodeColor = (type) => {
     switch (type) {
       case "SUSPECT":
-        return "#f43f5e"; // Rose
+        return "#f43f5e";
       case "FIR_CASE":
-        return "#fb923c"; // Orange
+        return "#fb923c";
       case "ORGANIZATION":
-        return "#38bdf8"; // Sky Blue
+        return "#38bdf8";
       case "PHONE":
-        return "#34d399"; // Emerald
+        return "#34d399";
       case "IMEI":
-        return "#818cf8"; // Indigo
+        return "#818cf8";
       case "VEHICLE":
-        return "#c084fc"; // Purple
+        return "#c084fc";
       case "WEAPON":
-        return "#ef4444"; // Red
+        return "#ef4444";
       default:
-        return "#94a3b8"; // Slate
+        return "#94a3b8";
     }
   };
 
@@ -154,8 +166,8 @@ export function NetworkGraphCanvas({ graphData, onSelectNode, selectedNodeId, hi
 
   return (
     <div
+      ref={containerRef}
       className="relative w-full h-[720px] bg-slate-950/95 rounded-xl border border-slate-850 overflow-hidden select-none"
-      onWheel={handleWheel}
     >
       {/* Canvas Controls Toolbar */}
       <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 bg-slate-900/80 backdrop-blur-md border border-slate-800 p-1.5 rounded-lg shadow-xl">
