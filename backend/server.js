@@ -76,31 +76,9 @@ app.get("/api/kanoon/search", async (req, res) => {
 app.post("/api/kanoon/ingest", async (req, res) => {
   try {
     const { docId = "7044947", title } = req.body;
-    let rawText = "";
-
-    try {
-      rawText = await new Promise((resolve, reject) => {
-        const url = `https://indiankanoon.org/doc/${docId}/`;
-        const options = {
-          headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" }
-        };
-        https.get(url, options, (resp) => {
-          let data = "";
-          resp.on("data", (chunk) => (data += chunk));
-          resp.on("end", () => {
-            const clean = data.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-            resolve(clean.length > 200 ? clean : "");
-          });
-        }).on("error", reject);
-      });
-    } catch (e) {
-      rawText = "";
-    }
-
-    if (!rawText) {
-      const docObj = await kanoonClient.fetchDocument(docId);
-      rawText = docObj.doc || docObj.title;
-    }
+    // Use KanoonClient which automatically handles Cloudflare bypass & clean document text
+    const docObj = await kanoonClient.fetchDocument(docId);
+    const rawText = docObj.doc || docObj.title;
 
     const result = await dynamicManager.ingestEvidence({
       caseId: `IK-${docId}`,
