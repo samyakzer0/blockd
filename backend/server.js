@@ -14,17 +14,27 @@ const { DynamicCaseManager } = require("./dynamicCaseManager");
 const { IndianKanoonClient } = require("./ingestion/indianKanoonClient");
 
 const app = express();
-const PORT = process.env.BLOCKD_PORT || 5001;
+// Render assigns PORT automatically (e.g. 10000 or process.env.PORT)
+const PORT = process.env.PORT || process.env.BLOCKD_PORT || 5001;
 
-app.use(cors());
+// Fully permissive CORS for seamless Vercel <-> Render communication
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-// Setup Multer for live file uploads
-const upload = multer({ dest: path.join(__dirname, "uploads/") });
-if (!fs.existsSync(path.join(__dirname, "uploads/"))) {
-  fs.mkdirSync(path.join(__dirname, "uploads/"), { recursive: true });
+// Setup Multer for live file uploads (/tmp/ is writable in all cloud environments like Render & Vercel)
+const uploadDir = process.env.NODE_ENV === "production" ? "/tmp/uploads" : path.join(__dirname, "uploads/");
+if (!fs.existsSync(uploadDir)) {
+  try {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  } catch (e) {}
 }
+const upload = multer({ dest: uploadDir });
 
 // Initialize Dynamic Case Manager
 const dynamicManager = new DynamicCaseManager();
@@ -169,7 +179,7 @@ app.post("/api/upload/multimodal", upload.array("files", 10), async (req, res) =
   }
 });
 
-// 6. Interactive Chatbot Intelligence Endpoint (Async Live Kanoon & Document Research)
+// 6. Interactive Chatbot Intelligence Endpoint
 app.post("/api/chat/query", async (req, res) => {
   try {
     const { query = "" } = req.body;
@@ -185,6 +195,6 @@ app.get("/api/case/dossier", (req, res) => {
   res.json(dynamicManager.getDossier());
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`🛡️  BlockD Pure Dynamic Intelligence Server running on port ${PORT}`);
 });
