@@ -1,60 +1,113 @@
 /**
  * BlockD Criminal Knowledge Graph Engine
- * Builds and maintains in-memory and Neo4j-compatible property graphs of criminal entities,
+ * Builds and maintains in-memory property graphs of criminal entities,
  * resolved master person profiles, phone interactions, and financial flows.
- * Executes centrality metrics, community segmentation, and link predictions.
+ * Executes centrality metrics (PageRank, Betweenness) with strict node/edge deduplication.
  */
 
 const { GraphAlgorithms } = require("./graphAlgorithms");
 
 class KnowledgeGraphEngine {
   constructor() {
-    this.nodes = new Map(); // id -> Node { id, label, type, properties }
-    this.edges = [];        // Array of Edge { id, source, target, relation, confidence, evidence }
-    this.adjacency = new Map(); // id -> Set<id>
+    this.nodes = new Map();       // canonicalId -> Node { id, label, type, properties }
+    this.edges = [];              // Array of Edge { id, source, target, relation, confidence, evidence }
+    this.adjacency = new Map();   // canonicalId -> Set<canonicalId>
+    this.labelIndex = new Map();  // lowerCaseCleanLabel -> canonicalId
+  }
+
+  _cleanLabel(str) {
+    if (!str) return "";
+    return String(str).trim().toLowerCase().replace(/^precedent:\s*/i, "").replace(/[^a-z0-9]/g, "");
   }
 
   /**
-   * Adds an entity node to the knowledge graph.
+   * Adds an entity node with strict canonical deduplication.
    */
   addNode(node) {
-    const id = String(node.id || node.label);
-    if (!this.nodes.has(id)) {
-      this.nodes.set(id, {
-        id,
-        label: node.label || id,
-        type: node.type || "UNKNOWN",
-        properties: node.properties || {}
-      });
-      this.adjacency.set(id, new Set());
+    if (!node || (!node.id && !node.label)) return null;
+
+    const rawLabel = String(node.label || node.id).trim();
+    const cleanKey = this._cleanLabel(rawLabel);
+
+    // If a node with identical or highly similar clean label already exists, update and return it
+    if (this.labelIndex.has(cleanKey)) {
+      const existingId = this.labelIndex.get(cleanKey);
+      const existingNode = this.nodes.get(existingId);
+      if (existingNode) {
+        if (node.type && node.type !== "UNKNOWN" && existingNode.type === "UNKNOWN") {
+          existingNode.type = node.type;
+        }
+        if (node.properties) {
+          existingNode.properties = { ...existingNode.properties, ...node.properties };
+        }
+        return existingNode;
+      }
     }
-    return this.nodes.get(id);
+
+    const canonicalId = String(node.id || node.label).trim();
+    const newNode = {
+      id: canonicalId,
+      label: rawLabel,
+      type: node.type || "SUSPECT",
+      properties: node.properties || {}
+    };
+
+    this.nodes.set(canonicalId, newNode);
+    this.labelIndex.set(cleanKey, canonicalId);
+    if (!this.adjacency.has(canonicalId)) {
+      this.adjacency.set(canonicalId, new Set());
+    }
+
+    return newNode;
   }
 
   /**
-   * Adds a directed relational edge to the knowledge graph.
+   * Adds a directed relational edge with strict deduplication.
    */
   addEdge(edge) {
-    const sourceId = String(edge.source);
-    const targetId = String(edge.target);
+    if (!edge || !edge.source || !edge.target) return null;
 
-    // Ensure both nodes exist
-    this.addNode({ id: sourceId, label: sourceId, type: edge.sourceType || "ENTITY" });
-    this.addNode({ id: targetId, label: targetId, type: edge.targetType || "ENTITY" });
+    // Resolve canonical node IDs
+    const sourceNode = this.addNode({ id: edge.source, label: edge.source, type: edge.sourceType || "SUSPECT" });
+    const targetNode = this.addNode({ id: edge.target, label: edge.target, type: edge.targetType || "ORGANIZATION" });
+
+    if (!sourceNode || !targetNode) return null;
+    const sourceId = sourceNode.id;
+    const targetId = targetNode.id;
+
+    if (sourceId === targetId) return null; // Avoid self-loops
+
+    const relation = String(edge.relation || edge.label || "ASSOCIATED_WITH").trim();
+
+    // Check if duplicate edge already exists between source and target
+    const existing = this.edges.find(e => 
+      (e.source === sourceId && e.target === targetId && e.relation === relation) ||
+      (e.source === targetId && e.target === sourceId && e.relation === relation)
+    );
+
+    if (existing) {
+      if (edge.confidence && edge.confidence > existing.confidence) {
+        existing.confidence = edge.confidence;
+      }
+      return existing;
+    }
 
     const edgeId = edge.id || `EDGE_${this.edges.length + 1}`;
     const newEdge = {
       id: edgeId,
       source: sourceId,
       target: targetId,
-      relation: edge.relation || "RELATED_TO",
-      confidence: edge.confidence || 0.9,
+      relation,
+      label: edge.label || relation,
+      confidence: edge.confidence || 0.92,
       evidence: edge.evidence || ""
     };
 
     this.edges.push(newEdge);
 
-    // Populate adjacency (undirected for connectivity and centrality)
+    // Populate adjacency
+    if (!this.adjacency.has(sourceId)) this.adjacency.set(sourceId, new Set());
+    if (!this.adjacency.has(targetId)) this.adjacency.set(targetId, new Set());
     this.adjacency.get(sourceId).add(targetId);
     this.adjacency.get(targetId).add(sourceId);
 
@@ -75,14 +128,13 @@ class KnowledgeGraphEngine {
 
   /**
    * Runs the complete analytical suite:
-   * PageRank (Kingpin), Betweenness Centrality (Broker), and Community Detection (Sub-gang).
+   * PageRank (Kingpin), Betweenness Centrality (Broker), and Community Detection.
    */
   runNetworkAnalytics() {
     const pageRankScores = GraphAlgorithms.pageRank(this.adjacency);
     const betweennessScores = GraphAlgorithms.betweennessCentrality(this.adjacency);
     const communities = GraphAlgorithms.communityDetection(this.adjacency);
 
-    // Annotate nodes with metrics
     for (const [id, node] of this.nodes.entries()) {
       node.metrics = {
         degree: (this.adjacency.get(id) || new Set()).size,
@@ -92,7 +144,6 @@ class KnowledgeGraphEngine {
       };
     }
 
-    // Rank top influencers and brokers
     const sortedByPageRank = Array.from(this.nodes.values())
       .sort((a, b) => (b.metrics?.pageRank || 0) - (a.metrics?.pageRank || 0));
 
@@ -108,9 +159,6 @@ class KnowledgeGraphEngine {
     };
   }
 
-  /**
-   * Finds the shortest path connecting any two suspect entities.
-   */
   findConnection(source, target) {
     return GraphAlgorithms.findShortestPath(this.adjacency, source, target);
   }
@@ -125,7 +173,7 @@ class KnowledgeGraphEngine {
   }
 
   /**
-   * Exports full graph ready for Cytoscape.js / React 2D/3D Force Graph visualizers.
+   * Exports full graph ready for canvas rendering.
    */
   exportVisualizerGraph() {
     return {
@@ -142,7 +190,7 @@ class KnowledgeGraphEngine {
           id: e.id,
           source: e.source,
           target: e.target,
-          label: e.relation,
+          label: e.label || e.relation,
           confidence: e.confidence,
           evidence: e.evidence
         }

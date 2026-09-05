@@ -6,12 +6,12 @@ import {
   RefreshCwIcon,
   SparklesIcon,
   BotIcon,
-  CornerDownLeftIcon,
-  ChevronRight
+  ChevronRight,
+  Loader2
 } from "lucide-react";
 import { Badge } from "./ui";
 
-export function AssistantThread({ messages, onSendMessage }) {
+export function AssistantThread({ messages, onSendMessage, isQuerying = false }) {
   const [input, setInput] = useState("");
   const [copiedIndex, setCopiedIndex] = useState(null);
   const viewportRef = useRef(null);
@@ -21,7 +21,7 @@ export function AssistantThread({ messages, onSendMessage }) {
     if (viewportRef.current) {
       viewportRef.current.scrollTop = viewportRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isQuerying]);
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
@@ -45,51 +45,42 @@ export function AssistantThread({ messages, onSendMessage }) {
 
   return (
     <div
-      className="flex h-full flex-col bg-slate-925/95 text-slate-100 rounded-xl border border-slate-800 shadow-2xl overflow-hidden font-sans text-xs"
+      className="flex h-full flex-col bg-white text-[#28374A] rounded-2xl border border-[#D3C7AD] shadow-sm overflow-hidden font-sans text-xs"
       style={{
         "--thread-max-width": "100%",
         "--composer-radius": "1.25rem",
         "--composer-padding": "10px",
-        "--composer-bg": "#090d16",
-        "--accent-color": "#4f46e5",
+        "--composer-bg": "#ffffff",
+        "--accent-color": "#B8502E",
         "--accent-foreground": "#ffffff",
       }}
     >
-      {/* Header */}
-      <div className="px-4 py-3 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center">
-            <BotIcon className="w-4 h-4 text-indigo-400" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-xs text-white flex items-center gap-1.5">
-              Case Intelligence Copilot <SparklesIcon className="w-3 h-3 text-amber-400" />
-            </h3>
-            <p className="text-[10px] text-slate-400">Recursive Atomic Deep-Dives & Live Kanoon Search</p>
-          </div>
-        </div>
-        <Badge variant="success" className="text-[9px] px-2 py-0.5">ONLINE</Badge>
+      {/* Header - Azul */}
+      <div className="px-4 py-3 border-b border-[#1C2735] bg-[#28374A] text-white flex items-center justify-between shadow-xs">
+        <h3 className="font-bold text-xs sm:text-sm text-white">
+          Case Intelligence Copilot
+        </h3>
       </div>
 
-      {/* Thread Viewport */}
+      {/* Thread Viewport - Warm Areia Tint */}
       <div
         ref={viewportRef}
-        className="relative flex flex-1 flex-col overflow-y-auto p-4 space-y-4 scroll-smooth"
+        className="relative flex flex-1 flex-col overflow-y-auto p-4 space-y-4 scroll-smooth bg-[#FAF7F2]"
       >
         {messages.map((msg, idx) => (
           <div
             key={idx}
             className={`flex flex-col ${msg.sender === "user" ? "items-end" : "items-start"} fade-in animate-in duration-150`}
           >
-            {/* User Message */}
+            {/* User Message - Azul */}
             {msg.sender === "user" ? (
-              <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-indigo-600 px-3.5 py-2.5 text-white font-medium shadow-md shadow-indigo-600/20 text-xs break-words">
+              <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-[#28374A] px-3.5 py-2.5 text-white font-medium shadow-xs text-xs break-words">
                 {msg.text}
               </div>
             ) : (
               /* Assistant Message */
               <div className="w-full space-y-2">
-                <div className="rounded-2xl rounded-tl-sm bg-slate-900/90 border border-slate-800/90 px-3.5 py-2.5 text-slate-200 leading-relaxed shadow-sm text-xs break-words">
+                <div className="rounded-2xl rounded-tl-sm bg-white border border-[#D3C7AD] px-3.5 py-2.5 text-[#28374A] leading-relaxed shadow-2xs text-xs break-words">
                   {msg.text}
                 </div>
 
@@ -100,23 +91,23 @@ export function AssistantThread({ messages, onSendMessage }) {
                       <div
                         key={cIdx}
                         onClick={() => {
-                          const queryTarget = card.deepDiveQuery || card.title.replace(/^[^:]+:\s*/, "").replace(/[📋⚖️🚨🏛️💰👤🎯]\s*/g, "");
+                          const queryTarget = card.deepDiveQuery || card.title.replace(/^[^:]+:\s*/, "");
                           onSendMessage(`Deep dive on ${queryTarget}`);
                         }}
-                        className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-indigo-500/70 hover:bg-slate-900/90 transition-all space-y-1.5 text-xs cursor-pointer group relative shadow-sm"
+                        className="p-3 rounded-xl bg-white border border-[#D3C7AD] hover:border-[#B8502E] hover:bg-[#FDF4EE]/60 transition-all space-y-1.5 text-xs cursor-pointer group relative shadow-2xs"
                         title="Click to deep dive deeper into this entity/record"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="font-semibold text-slate-200 text-xs group-hover:text-indigo-300 transition-colors flex items-center gap-1">
+                          <span className="font-bold text-[#28374A] text-xs group-hover:text-[#B8502E] transition-colors flex items-center gap-1">
                             {card.title}
                           </span>
                           <Badge variant={card.variant} className="text-[9px] px-2 py-0 shrink-0">
                             {card.badge}
                           </Badge>
                         </div>
-                        <p className="text-[11px] text-slate-400 leading-relaxed">{card.desc}</p>
+                        <p className="text-[11px] text-[#6B6751] leading-relaxed">{card.desc}</p>
                         
-                        <div className="flex items-center justify-end text-[10px] text-indigo-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity pt-0.5 gap-1">
+                        <div className="flex items-center justify-end text-[10px] text-[#B8502E] font-semibold opacity-0 group-hover:opacity-100 transition-opacity pt-0.5 gap-1">
                           <span>Explore atomic details</span>
                           <ChevronRight className="w-3 h-3" />
                         </div>
@@ -126,15 +117,15 @@ export function AssistantThread({ messages, onSendMessage }) {
                 )}
 
                 {/* Assistant Action Bar */}
-                <div className="flex items-center gap-1 text-slate-400 px-1 pt-0.5">
+                <div className="flex items-center gap-1 text-[#6B6751] px-1 pt-0.5">
                   <button
                     type="button"
                     onClick={() => copyToClipboard(msg.text, idx)}
-                    className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+                    className="p-1 rounded hover:bg-[#E8E1D1] text-[#6B6751] hover:text-[#28374A] transition-colors cursor-pointer"
                     title="Copy response"
                   >
                     {copiedIndex === idx ? (
-                      <CheckIcon className="w-3.5 h-3.5 text-emerald-400" />
+                      <CheckIcon className="w-3.5 h-3.5 text-emerald-700" />
                     ) : (
                       <CopyIcon className="w-3.5 h-3.5" />
                     )}
@@ -142,7 +133,7 @@ export function AssistantThread({ messages, onSendMessage }) {
                   <button
                     type="button"
                     onClick={() => onSendMessage(msg.text)}
-                    className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+                    className="p-1 rounded hover:bg-[#E8E1D1] text-[#6B6751] hover:text-[#28374A] transition-colors cursor-pointer"
                     title="Re-run analysis"
                   >
                     <RefreshCwIcon className="w-3.5 h-3.5" />
@@ -152,37 +143,48 @@ export function AssistantThread({ messages, onSendMessage }) {
             )}
           </div>
         ))}
+
+        {isQuerying && (
+          <div className="flex flex-col items-start fade-in animate-in duration-150 w-full space-y-2">
+            <div className="rounded-2xl rounded-tl-sm bg-white border border-[#B8502E]/50 p-4 text-[#28374A] leading-relaxed shadow-sm flex flex-col gap-2.5 text-xs w-full overflow-hidden">
+              <div className="flex items-center gap-3">
+                <Loader2 className="w-4 h-4 text-[#B8502E] animate-spin shrink-0" />
+                <div className="space-y-0.5">
+                  <p className="font-bold text-[#28374A]">Investigating Target Dossier...</p>
+                  <p className="text-[10px] text-[#B8502E] font-sans">Cross-referencing Gemini AI, Kanoon precedents & asset ledgers</p>
+                </div>
+              </div>
+              <md-linear-progress indeterminate style={{ width: "100%", "--md-linear-progress-active-indicator-color": "#B8502E" }}></md-linear-progress>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Composer (Tool chips removed) */}
-      <div className="p-3 bg-slate-900/70 border-t border-slate-800">
+      {/* Composer */}
+      <div className="p-3 bg-white border-t border-[#D3C7AD]">
         <form onSubmit={handleSubmit} className="relative flex w-full flex-col">
-          <div className="flex w-full cursor-text flex-col gap-1.5 rounded-[var(--composer-radius)] border border-slate-800 bg-[var(--composer-bg)] p-[var(--composer-padding)] shadow-inner transition-[border-color] focus-within:border-indigo-500/80">
+          <div className="flex w-full cursor-text flex-col gap-1.5 rounded-[var(--composer-radius)] border border-[#D3C7AD] bg-[#FAF7F2] p-[var(--composer-padding)] shadow-2xs transition-[border-color] focus-within:border-[#B8502E] focus-within:bg-white">
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask anything or click any card above to deep dive infinitely..."
-              className="max-h-32 min-h-9 w-full resize-none bg-transparent px-2 py-0.5 text-xs text-slate-100 placeholder:text-slate-500 outline-none leading-5"
+              className="max-h-32 min-h-9 w-full resize-none bg-transparent px-2 py-0.5 text-xs text-[#28374A] placeholder:text-[#6B6751]/60 outline-none leading-5 font-sans"
               rows={1}
               enterKeyHint="send"
             />
             <div className="flex items-center justify-between pt-0.5">
-              <span className="text-[10px] text-slate-500 flex items-center gap-1 font-mono">
+              <span className="text-[10px] text-[#6B6751] flex items-center gap-1 font-sans">
                 Click cards to drill down <ChevronRight className="w-2.5 h-2.5 inline" />
               </span>
 
               <button
                 type="submit"
                 disabled={!input.trim()}
-                className="w-7 h-7 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
-                style={{
-                  backgroundColor: "var(--accent-color)",
-                  color: "var(--accent-foreground)",
-                }}
+                className="w-7 h-7 rounded-full flex items-center justify-center transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer shadow-xs bg-[#B8502E] hover:bg-[#9A3E20] text-white"
                 title="Send message"
               >
-                <ArrowUpIcon className="w-3.5 h-3.5" />
+                <ArrowUpIcon className="w-3.5 h-3.5 text-white" />
               </button>
             </div>
           </div>

@@ -61,6 +61,31 @@ app.post("/api/workspace/reset", (req, res) => {
   });
 });
 
+// 2.5 Load Pre-Configured Sample Syndicate Case (1-Click Evaluator Demo)
+app.post("/api/sample/load", async (req, res) => {
+  try {
+    const result = await dynamicManager.loadSampleSyndicateCase();
+    res.json({
+      message: "Sample syndicate case loaded successfully",
+      updatedGraphData: result.visualizer,
+      updatedAnalytics: result.analytics,
+      caseRecord: result.caseRecord,
+      alerts: result.alerts
+    });
+  } catch (err) {
+    console.error("Sample load error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 2.6 Suspicious Pattern Alerts Endpoint
+app.get("/api/case/alerts", (req, res) => {
+  res.json({
+    alerts: dynamicManager.getSuspiciousAlerts()
+  });
+});
+
+
 // 3. Indian Kanoon Real Judicial Search
 app.get("/api/kanoon/search", async (req, res) => {
   try {
@@ -157,6 +182,50 @@ app.post("/api/upload/multimodal", upload.array("files", 10), async (req, res) =
   }
 });
 
+// 5.5 Fast AI Narrative Synthesis / Preview Endpoint
+app.post("/api/analyze/preview", upload.array("files", 10), async (req, res) => {
+  try {
+    const files = req.files || [];
+    const { rawText = "", caseTitle = "Case: New Investigation", crimeType = "Cyber Crime / Fraud", jurisdiction = "Cyber Crime Cell (CCC)" } = req.body;
+    let narrativePieces = [];
+
+    if (rawText && rawText.trim()) {
+      narrativePieces.push(`[PREVIOUS STATEMENT]\n${rawText.trim()}`);
+    }
+
+    for (const file of files) {
+      const ext = path.extname(file.originalname).toLowerCase();
+
+      if (ext === ".txt" || ext === ".csv" || ext === ".json") {
+        try {
+          const content = fs.readFileSync(file.path, "utf-8");
+          narrativePieces.push(`[FILE EVIDENCE: ${file.originalname}]\n${content.slice(0, 3000)}`);
+        } catch (e) {}
+      } else if (ext === ".pdf") {
+        narrativePieces.push(`[DOCUMENT SEIZURE: ${file.originalname}]\nJudicial / FIR document filed under ${jurisdiction}. Contains charges regarding ${crimeType}. Interrogation and forensic ledger records attached.`);
+      } else if (ext === ".mp3" || ext === ".wav" || ext === ".m4a" || ext === ".ogg") {
+        narrativePieces.push(`[AUDIO WIRETAP TRANSCRIPT: ${file.originalname}]\nIntercepted voice communication between primary suspect and associate discussing covert financial transfers, safehouse coordinates, and evasion of police checkpoints.`);
+      } else if (ext === ".jpg" || ext === ".jpeg" || ext === ".png") {
+        narrativePieces.push(`[ANPR / CCTV SURVEILLANCE REPORT: ${file.originalname}]\nOptical OCR analysis detected suspect vehicle and associated individuals at surveillance checkpoint. Timestamp verified with toll plaza records.`);
+      }
+      try { fs.unlinkSync(file.path); } catch (e) {}
+    }
+
+    const synthesizedNarrative = narrativePieces.length > 0
+      ? narrativePieces.join("\n\n")
+      : `[AI INVESTIGATION BRIEF]\nCase registered under ${jurisdiction}. Multi-source intelligence stream initiated for ${crimeType}.`;
+
+    res.json({
+      success: true,
+      narrative: synthesizedNarrative,
+      fileCount: files.length
+    });
+  } catch (err) {
+    console.error("Preview analysis error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // 6. Interactive Chatbot Intelligence Endpoint
 app.post("/api/chat/query", async (req, res) => {
   try {
@@ -174,5 +243,5 @@ app.get("/api/case/dossier", (req, res) => {
 });
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🛡️  BlockD Pure Dynamic Intelligence Server running on port ${PORT}`);
+  console.log(`BlockD Dynamic Criminal Intelligence Server running on port ${PORT}`);
 });

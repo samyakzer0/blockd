@@ -2,25 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  background-color: #040711;
-  color: #f1f5f9;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+:root {
+  /* Material Design 3 System Tokens - Exact Terracotta / Earth Palette */
+  /* AZUL: #28374A | TERRA QUEIMADA (WARMED): #B8502E | VERDE OPACO: #6B6751 | AREIA: #D3C7AD */
+  --md-sys-color-primary: #28374A;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #394B62;
+  --md-sys-color-on-primary-container: #FFFFFF;
+
+  --md-sys-color-secondary: #B8502E;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #FDF4EE;
+  --md-sys-color-on-secondary-container: #B8502E;
+
+  --md-sys-color-tertiary: #6B6751;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #E8E1D1;
+  --md-sys-color-on-tertiary-container: #28374A;
+
+  --md-sys-color-surface: #FAF7F2;
+  --md-sys-color-on-surface: #28374A;
+  --md-sys-color-surface-variant: #F2ECE3;
+  --md-sys-color-on-surface-variant: #6B6751;
+  --md-sys-color-surface-container-highest: #E8E1D1;
+  --md-sys-color-surface-container-high: #EDE6DA;
+  --md-sys-color-surface-container: #F2ECE3;
+  --md-sys-color-surface-container-low: #F7F3EC;
+  --md-sys-color-surface-container-lowest: #FAF7F2;
+
+  --md-sys-color-outline: #D3C7AD;
+  --md-sys-color-outline-variant: #E8E1D1;
+  --md-sys-color-background: #F2ECE3;
+  --md-sys-color-on-background: #28374A;
+
+  --md-sys-color-error: #B8502E;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FDF4EE;
+  --md-sys-color-on-error-container: #B8502E;
+
+  /* Button Tokens */
+  --md-filled-button-container-color: #B8502E;
+  --md-filled-button-label-text-color: #FFFFFF;
+  --md-filled-button-hover-state-layer-color: #FFFFFF;
+  --md-filled-button-focus-state-layer-color: #FFFFFF;
+
+  --md-outlined-button-outline-color: #D3C7AD;
+  --md-outlined-button-label-text-color: #28374A;
+  --md-outlined-button-hover-outline-color: #B8502E;
+
+  /* Form & Input Tokens */
+  --md-outlined-text-field-outline-color: #D3C7AD;
+  --md-outlined-text-field-focus-outline-color: #B8502E;
+  --md-outlined-text-field-input-text-color: #28374A;
+  --md-outlined-text-field-label-text-color: #6B6751;
+
+  --md-checkbox-selected-container-color: #B8502E;
+  --md-checkbox-selected-icon-color: #FFFFFF;
+
+  /* Progress Indicators */
+  --md-linear-progress-active-indicator-color: #B8502E;
+  --md-linear-progress-track-color: #E8E1D1;
+
+  --md-circular-progress-active-indicator-color: #B8502E;
 }
 
-/* Custom sleek scrollbars */
+body {
+  font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #080c14;
+  background: #F2ECE3;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #D3C7AD;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #B8502E;
 }
